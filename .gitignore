@@ -1,0 +1,28 @@
+# --- Secrets (never commit; .env.example is the tracked template) ---
+.env
+.env.*
+!.env.example
+
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+
+# --- Node ---
+node_modules/
+dist/
+.vite/
+
+# --- Local tooling / editors ---
+.claude/settings.local.json
+.vscode/
+.idea/
+
+# --- OS ---
+Thumbs.db
+.DS_Store
+
+# --- Evaluation corpus (fetched via manifest, not committed) ---
+backend/evaluation/corpus/*.pdf

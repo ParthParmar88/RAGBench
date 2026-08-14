@@ -1,0 +1,141 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   Design tokens — premium white theme
+   Single source of truth for color, type, radius, and elevation.
+   Exposed to Tailwind as utilities (bg-surface, text-muted, shadow-card, …).
+   ========================================================================== */
+@theme {
+  /* Surfaces */
+  --color-surface: #ffffff; /* primary background / cards */
+  --color-surface-2: #f8f9fa; /* secondary background */
+  --color-hover: #f3f4f6; /* hover background */
+
+  /* Text */
+  --color-ink: #111111; /* primary text + accent */
+  --color-secondary: #4b5563; /* secondary text */
+  --color-muted: #6b7280; /* muted text */
+
+  /* Lines */
+  --color-line: #e5e7eb; /* borders / dividers */
+
+  /* Status (used sparingly, low saturation) */
+  --color-success: #16a34a;
+  --color-danger: #dc2626;
+
+  /* Typography */
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+    Roboto, Helvetica, Arial, sans-serif;
+
+  /* Radii */
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+
+  /* Soft, neutral elevation — no colored glows */
+  --shadow-soft: 0 1px 2px 0 rgb(16 24 40 / 0.05);
+  --shadow-card: 0 1px 3px 0 rgb(16 24 40 / 0.08),
+    0 1px 2px -1px rgb(16 24 40 / 0.06);
+  --shadow-pop: 0 8px 24px -6px rgb(16 24 40 / 0.12),
+    0 2px 6px -2px rgb(16 24 40 / 0.06);
+}
+
+/* ============================================================================
+   Base
+   ========================================================================== */
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    @apply bg-surface text-ink font-sans antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  ::selection {
+    background: color-mix(in srgb, var(--color-ink) 12%, transparent);
+  }
+
+  /* Quiet, minimal scrollbars */
+  * {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-line) transparent;
+  }
+  *::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  *::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 9999px;
+    border: 3px solid transparent;
+    background-clip: padding-box;
+  }
+  *::-webkit-scrollbar-thumb:hover {
+    background: #d6dae1;
+    background-clip: padding-box;
+  }
+}
+
+/* ============================================================================
+   Component variants — reusable building blocks
+   Compose in JSX, e.g. <button className="btn btn-primary">.
+   ========================================================================== */
+@layer components {
+  /* Buttons -------------------------------------------------------------- */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg text-sm
+      font-medium transition-colors duration-150 select-none
+      focus:outline-none focus-visible:ring-2 focus-visible:ring-neutral-900/15
+      disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply bg-ink px-4 py-2.5 text-white hover:bg-neutral-800 active:bg-neutral-900;
+  }
+  .btn-ghost {
+    @apply px-3 py-2 text-secondary hover:bg-hover;
+  }
+  .btn-outline {
+    @apply border border-line bg-surface px-4 py-2.5 text-ink shadow-soft hover:bg-hover;
+  }
+  .btn-icon {
+    @apply h-9 w-9 shrink-0 rounded-full p-0;
+  }
+
+  /* Inputs --------------------------------------------------------------- */
+  .input {
+    @apply w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm
+      text-ink shadow-soft transition placeholder:text-muted
+      focus:border-neutral-400 focus:outline-none focus:ring-4 focus:ring-neutral-900/5;
+  }
+
+  /* Surfaces ------------------------------------------------------------- */
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+
+  /* Badges --------------------------------------------------------------- */
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-full px-2.5 py-1
+      text-xs font-medium;
+  }
+  .badge-neutral {
+    @apply bg-surface-2 text-secondary;
+  }
+  .badge-success {
+    @apply text-success;
+    background: color-mix(in srgb, var(--color-success) 12%, transparent);
+  }
+  .badge-danger {
+    @apply text-danger;
+    background: color-mix(in srgb, var(--color-danger) 12%, transparent);
+  }
+
+  /* Eyebrow / section labels -------------------------------------------- */
+  .eyebrow {
+    @apply text-xs font-semibold uppercase tracking-wider text-muted;
+  }
+}
