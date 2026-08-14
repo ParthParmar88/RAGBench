@@ -4,9 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.schemas import DeleteResponse, SourceInfo, UploadResponse
-from app.services import embeddings, vector_store
-from app.services.chunker import chunk_text
-from app.services.pdf_extractor import extract_text
+from app.services import ingestion, vector_store
+from app.services.ingestion import EmptyDocumentError
 
 router = APIRouter(prefix="/api/documents", tags=["documents"])
 
@@ -16,26 +15,30 @@ async def upload_document(
     file: UploadFile = File(...),
     db: Session = Depends(get_db),
 ):
-    """Upload a PDF → extract → chunk → embed → store."""
+    """Upload a PDF → extract → chunk → embed → store.
+
+    Idempotent: re-uploading the same bytes under the same name is a no-op, and
+    uploading changed bytes replaces the previous chunks rather than adding to
+    them.
+    """
     if not file.filename or not file.filename.lower().endswith(".pdf"):
         raise HTTPException(status_code=400, detail="Only PDF files are supported.")
 
     file_bytes = await file.read()
-    text = extract_text(file_bytes)
-    if not text.strip():
+    try:
+        result = ingestion.ingest_pdf(db, file.filename, file_bytes)
+    except EmptyDocumentError:
         raise HTTPException(
             status_code=422,
             detail="No extractable text found (the PDF may be scanned images).",
         )
 
-    chunks = chunk_text(text)
-    if not chunks:
-        raise HTTPException(status_code=422, detail="Document produced no chunks.")
-
-    vectors = embeddings.embed_texts(chunks)
-    added = vector_store.add_knowledge_units(db, file.filename, chunks, vectors)
-
-    return UploadResponse(title=file.filename, chunks_added=added)
+    return UploadResponse(
+        title=result.title,
+        chunks_added=result.chunks_added,
+        status=result.status,
+        page_count=result.page_count,
+    )
 
 
 @router.get("", response_model=list[SourceInfo])

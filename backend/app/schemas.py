@@ -8,6 +8,10 @@ from pydantic import BaseModel, ConfigDict, Field
 class UploadResponse(BaseModel):
     title: str
     chunks_added: int
+    # "created" | "replaced" | "unchanged" — re-uploading identical bytes is a
+    # no-op, so the caller can tell a real ingest from a skipped one.
+    status: str
+    page_count: int
 
 
 class SourceInfo(BaseModel):
@@ -30,6 +34,7 @@ class Citation(BaseModel):
     title: str
     score: float | None = None  # vector similarity of the cited chunk
     snippet: str
+    page: int | None = None  # null for chunks ingested before provenance existed
 
 
 class TurnUsageCall(BaseModel):
@@ -53,9 +58,27 @@ class TurnUsage(BaseModel):
     breakdown: list[TurnUsageCall]
 
 
+class QueryTimings(BaseModel):
+    """Per-stage latency. `retrieval_ms` is embedding + search."""
+
+    embedding_ms: int
+    search_ms: int
+    retrieval_ms: int
+    generation_ms: int
+    total_ms: int
+
+
+class RetrievalInfo(BaseModel):
+    chunk_count: int
+    top_score: float | None
+    avg_score: float | None
+
+
 class ChatResponse(BaseModel):
     direct_answer: str
     sources: list[Citation]
+    retrieval: RetrievalInfo | None = None
+    timings: QueryTimings | None = None
     usage: TurnUsage | None = None
 
 

@@ -67,6 +67,7 @@ def synthesize_answer(
                     "title": c.title,
                     "score": round(c.score, 4),
                     "snippet": c.content[:280],
+                    "page": c.page,
                 }
             )
     return answer, resolved

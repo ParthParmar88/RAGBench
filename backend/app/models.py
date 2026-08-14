@@ -1,7 +1,8 @@
 """SQLAlchemy ORM models.
 
 Tables:
-  - `knowledge_units` : retrievable chunks (title, content, embedding)
+  - `documents`       : one row per ingested source file (identity + checksum)
+  - `knowledge_units` : retrievable chunks (content, embedding, provenance)
   - `model_pricing`   : time-versioned per-model rates (USD per 1M tokens)
   - `llm_usage`       : one row per LLM call (tokens + computed cost)
 """
@@ -23,12 +24,57 @@ from app.config import settings
 from app.database import Base
 
 
+class Document(Base):
+    """One ingested source file.
+
+    `content_sha256` makes ingestion idempotent: re-uploading a byte-identical
+    file is a no-op instead of silently duplicating every chunk. Uploading a
+    *changed* file with the same name replaces the old chunks wholesale.
+    """
+
+    __tablename__ = "documents"
+
+    id = Column(BigInteger, primary_key=True, autoincrement=True)
+    title = Column(Text, nullable=False, unique=True, index=True)
+    content_sha256 = Column(String(64), nullable=False, index=True)
+    page_count = Column(Integer, nullable=False, default=0)
+    chunk_count = Column(Integer, nullable=False, default=0)
+    created_at = Column(
+        DateTime(timezone=True), nullable=False, server_default=func.now()
+    )
+    updated_at = Column(
+        DateTime(timezone=True),
+        nullable=False,
+        server_default=func.now(),
+        onupdate=func.now(),
+    )
+
+
 class KnowledgeUnit(Base):
+    """A retrievable chunk, with enough provenance to audit a retrieval.
+
+    `page` and `chunk_index` exist for evaluation, not for the UI: judging
+    whether retrieval found the *right* passage requires a stable way to name
+    passages. `title` alone (a filename) can't do that.
+
+    All three provenance columns are nullable because chunks ingested before
+    this schema existed cannot have them backfilled — page numbers are simply
+    not recoverable after the fact. Re-uploading a document populates them.
+    """
+
     __tablename__ = "knowledge_units"
 
     id = Column(BigInteger, primary_key=True, autoincrement=True)
+    document_id = Column(
+        BigInteger,
+        ForeignKey("documents.id", ondelete="CASCADE"),
+        nullable=True,
+        index=True,
+    )
     title = Column(Text, nullable=False, index=True)
     content = Column(Text, nullable=False)
+    page = Column(Integer, nullable=True)  # 1-based page in the source PDF
+    chunk_index = Column(Integer, nullable=True)  # 0-based ordinal within the doc
     embedding = Column(Vector(settings.OPENAI_EMBEDDING_DIM), nullable=False)
 
 
