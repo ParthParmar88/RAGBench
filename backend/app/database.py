@@ -50,20 +50,6 @@ def init_db() -> None:
         )
         conn.commit()
 
-    # Lightweight, idempotent migration: add the compare-mode `pipeline` tag to
-    # existing llm_usage tables (create_all only adds it for fresh databases).
-    with engine.connect() as conn:
-        conn.execute(
-            text("ALTER TABLE llm_usage ADD COLUMN IF NOT EXISTS pipeline VARCHAR(40)")
-        )
-        conn.execute(
-            text(
-                "CREATE INDEX IF NOT EXISTS ix_llm_usage_pipeline "
-                "ON llm_usage (pipeline)"
-            )
-        )
-        conn.commit()
-
     # Seed initial model pricing (idempotent).
     from app.services.pricing_seed import seed_pricing
 
