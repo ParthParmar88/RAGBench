@@ -8,12 +8,15 @@ string — so a chunk's start offset can be mapped back to its page afterwards.
 Chunking per page instead would be simpler, but it would move every chunk
 boundary and silently invalidate comparisons against the frozen baseline.
 """
+import logging
 from dataclasses import dataclass
 from io import BytesIO
 
 from pypdf import PdfReader
 
 PAGE_SEPARATOR = "\n\n"
+
+logger = logging.getLogger(__name__)
 
 
 @dataclass(frozen=True)
@@ -29,11 +32,23 @@ def extract_pages(file_bytes: bytes) -> list[str]:
     """Return a list of page texts (index 0 == page 1).
 
     Pages that yield no extractable text (e.g. scanned images) come back as "".
+
+    Extraction is isolated per page. Real PDFs contain malformed font tables
+    that make pypdf raise on a single page, and letting that abort the whole
+    document would silently drop a paper from the corpus. A failed page is
+    logged and treated as empty — degraded, but visible and recoverable.
     """
     reader = PdfReader(BytesIO(file_bytes))
     pages: list[str] = []
-    for page in reader.pages:
-        text = page.extract_text() or ""
+    for number, page in enumerate(reader.pages, start=1):
+        try:
+            text = page.extract_text() or ""
+        except Exception as exc:  # noqa: BLE001 - any font/parser fault is survivable
+            logger.warning(
+                "Page %d text extraction failed (%s: %s); treating as empty.",
+                number, type(exc).__name__, exc,
+            )
+            text = ""
         pages.append(text.strip())
     return pages
 

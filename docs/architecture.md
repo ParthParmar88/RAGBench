@@ -201,7 +201,18 @@ four tables and one developer, a migration toolchain costs more than it
 returns. That trade-off flips if the schema grows or a second environment
 appears — adopt Alembic then.
 
-### 5.7 No retrieval filtering
+### 5.7 pypdf was upgraded before any measurement
+
+Extraction originally ran on pypdf 5.1.0, which raised `UnboundLocalError` on a
+malformed Type1 font table in `colbert.pdf` and aborted the whole document.
+Upgraded to 6.16.0, and `extract_pages` now isolates failures per page: a bad
+page is logged and treated as empty rather than losing the paper.
+
+Done deliberately *before* any baseline number existed, since text extraction
+changes chunk boundaries. Doing it later would have invalidated every prior
+result.
+
+### 5.8 No retrieval filtering
 
 Search returns the top *k* regardless of score. A query with no relevant
 content still returns 5 chunks, at whatever similarity. The synthesizer prompt
@@ -228,6 +239,7 @@ virtualenvs, and dependencies are excluded; restoring is a plain unzip.
 | `v1.0-baseline-rag` | the RAG exactly as found |
 | `v1.0.1-baseline-phase0` | + dead code removed, + 28 tests. Behaviour identical. |
 | `v1.1-phase1-measured` | + idempotent ingestion, chunk provenance, latency breakdown |
+| `v1.2-phase2-benchmark` | + evaluation corpus (8 papers, 445 chunks) and 75-case benchmark |
 
 The stronger guarantee is behavioural rather than archival: from Experiment 003
 onward, the advanced codebase reproduces baseline behaviour by configuration

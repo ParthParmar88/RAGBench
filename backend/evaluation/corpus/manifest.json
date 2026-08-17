@@ -1,0 +1,77 @@
+{
+  "corpus_version": "v1",
+  "papers": [
+    {
+      "arxiv_id": "1706.03762",
+      "title": "Attention Is All You Need",
+      "filename": "attention.pdf",
+      "sha256": "bdfaa68d8984f0dc02beaca527b76f207d99b666d31d1da728ee0728182df697",
+      "bytes": 2215244,
+      "source_url": "https://arxiv.org/pdf/1706.03762",
+      "why": "Transformer architecture. Dense with exact terms (multi-head attention, positional encoding) and shares vocabulary with BERT — a good test of whether retrieval can separate two topically adjacent papers."
+    },
+    {
+      "arxiv_id": "1810.04805",
+      "title": "BERT: Pre-training of Deep Bidirectional Transformers",
+      "filename": "bert.pdf",
+      "sha256": "5692a5514787a8c6727b4ff3b726a3385798bc68e12138d1d4af83947e2acf6e",
+      "bytes": 775166,
+      "source_url": "https://arxiv.org/pdf/1810.04805",
+      "why": "Bidirectional pre-training. Overlaps heavily with the Transformer and re-ranking papers, so it stresses precision rather than recall."
+    },
+    {
+      "arxiv_id": "2004.04906",
+      "title": "Dense Passage Retrieval for Open-Domain Question Answering",
+      "filename": "dpr.pdf",
+      "sha256": "3e67fc1a9977715acf722d85f0b7d124b03715e975f6310a4d6c12094190912f",
+      "bytes": 383508,
+      "source_url": "https://arxiv.org/pdf/2004.04906",
+      "why": "The dense dual-encoder baseline. Directly comparable to ColBERT, and explicitly contrasts itself with BM25 — ideal for multi-document questions and for Experiment 003's core claim."
+    },
+    {
+      "arxiv_id": "2004.12832",
+      "title": "ColBERT: Efficient and Effective Passage Search",
+      "filename": "colbert.pdf",
+      "sha256": "2e487d9b96e3c2e5e286d843e98a066adc0442faa3a6e8ddbd1771221bf9ae14",
+      "bytes": 4918165,
+      "source_url": "https://arxiv.org/pdf/2004.12832",
+      "why": "Late interaction. 'ColBERT' is a rare exact token that embeddings blur into generic BERT-similarity — the canonical case where lexical search wins and pure vector search fails."
+    },
+    {
+      "arxiv_id": "2005.11401",
+      "title": "Retrieval-Augmented Generation for Knowledge-Intensive NLP",
+      "filename": "rag.pdf",
+      "sha256": "23e3249e9a1e75418d82efecab0ea8c4d033b89c93742f63208d47ce01f21233",
+      "bytes": 885323,
+      "source_url": "https://arxiv.org/pdf/2005.11401",
+      "why": "The RAG paper itself. Ties the corpus to the system under test and supplies questions about the architecture being evaluated."
+    },
+    {
+      "arxiv_id": "1901.04085",
+      "title": "Passage Re-ranking with BERT",
+      "filename": "reranking.pdf",
+      "sha256": "b3f05b72d6d24b00761fb0a7363b6e7a10dac22b7f0abfaf4f5025bea7f8e22e",
+      "bytes": 179659,
+      "source_url": "https://arxiv.org/pdf/1901.04085",
+      "why": "Cross-encoder re-ranking — the technique Experiment 004 implements. Lets the system answer questions about its own reranker."
+    },
+    {
+      "arxiv_id": "2104.08663",
+      "title": "BEIR: A Heterogeneous Benchmark for Zero-shot IR",
+      "filename": "beir.pdf",
+      "sha256": "1925755aeb627123d1a63c66f02e5aa2432f7e92751a02bea7c8c3b6bbb6ec33",
+      "bytes": 2094824,
+      "source_url": "https://arxiv.org/pdf/2104.08663",
+      "why": "Retrieval evaluation methodology. Table-heavy, which also probes how badly the structure-blind chunker mangles tabular content (Experiment 002)."
+    },
+    {
+      "arxiv_id": "2307.03172",
+      "title": "Lost in the Middle: How Language Models Use Long Contexts",
+      "filename": "lostinthemiddle.pdf",
+      "sha256": "653b29619eae2ae4b361d7bdcdc06db4bedcb1b0eabe31814036beca8c1af0b1",
+      "bytes": 747542,
+      "source_url": "https://arxiv.org/pdf/2307.03172",
+      "why": "Position bias in long contexts. Directly relevant to why reranking order matters, not just which chunks are retrieved."
+    }
+  ]
+}
