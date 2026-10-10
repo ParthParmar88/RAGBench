@@ -159,7 +159,7 @@ was never stored whole. Any experiment run before this is addressed risks
 measuring the chunker rather than the retriever.
 
 → *Status: open.* Experiment 002 became a top-k sweep instead. Its result (top-20
-finds 93% of passages, top-5 finds 82%) showed that retrieval depth, not chunk
+finds 93% of passages, top-5 finds 80%) showed that retrieval depth, not chunk
 boundaries, was the cheaper lever. See [RESULTS.md](../RESULTS.md).
 
 ### 5.2 No lexical retrieval
@@ -223,10 +223,13 @@ Search returns the top *k* regardless of score. A query with no relevant
 content still returns 5 chunks, at whatever similarity. The synthesizer prompt
 is the only guard against answering from irrelevant context.
 
-→ *Status: resolved in Experiment 004.* `MIN_RERANK_SCORE` answers "not found"
-without calling the LLM when the best cross-encoder score is below the threshold.
-It gates on the cross-encoder, not vector similarity, because vector scores for
-answerable and unanswerable questions overlap almost entirely.
+→ *Status: attempted, not solved.* Experiment 004 added `MIN_RERANK_SCORE`, which
+answers "not found" without calling the LLM when the best cross-encoder score is
+below a threshold. It looked promising on the tuning benchmark, then refused 3 of
+34 answerable questions on the held-out set (Experiment 005) while catching no
+unanswerable question the LLM was not already refusing. It is off by default. A
+relevance score cannot separate "the answer is here" from "the topic is here".
+See [RESULTS.md](../RESULTS.md).
 
 ---
 

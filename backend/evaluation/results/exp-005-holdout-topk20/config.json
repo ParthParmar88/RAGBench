@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp-005-holdout-topk20",
+  "note": "Held-out check: vector top-20.",
+  "run_at": "2026-10-10T08:11:29.142632+00:00",
+  "duration_s": 103.1,
+  "dataset": {
+    "path": "holdout.jsonl",
+    "version": "holdout",
+    "cases": 46
+  },
+  "pipeline": {
+    "retrieval_mode": "vector",
+    "reranking_enabled": false,
+    "rerank_model": null,
+    "rerank_candidates": null,
+    "min_rerank_score": null,
+    "langgraph_enabled": false,
+    "cache_enabled": false,
+    "top_k": 20,
+    "chunk_size": 1200,
+    "chunk_overlap": 150
+  },
+  "models": {
+    "generation": "gpt-4o-mini",
+    "embedding": "text-embedding-3-small",
+    "embedding_dim": 1536,
+    "judge": null,
+    "judge_embeddings": null
+  },
+  "environment": {
+    "python": "3.14.5"
+  }
+}

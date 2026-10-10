@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp-005-holdout-rerank-k8-gate",
+  "note": "Held-out check: the final config (rerank 20 -> 8, gate at -2.5), settings unchanged from exp-004.",
+  "run_at": "2026-10-10T08:46:23.018857+00:00",
+  "duration_s": 1588.9,
+  "dataset": {
+    "path": "holdout.jsonl",
+    "version": "holdout",
+    "cases": 46
+  },
+  "pipeline": {
+    "retrieval_mode": "vector",
+    "reranking_enabled": true,
+    "rerank_model": "cross-encoder/ms-marco-MiniLM-L12-v2",
+    "rerank_candidates": 20,
+    "min_rerank_score": -2.5,
+    "langgraph_enabled": false,
+    "cache_enabled": false,
+    "top_k": 8,
+    "chunk_size": 1200,
+    "chunk_overlap": 150
+  },
+  "models": {
+    "generation": "gpt-4o-mini",
+    "embedding": "text-embedding-3-small",
+    "embedding_dim": 1536,
+    "judge": "gpt-4o-mini",
+    "judge_embeddings": "text-embedding-3-small"
+  },
+  "environment": {
+    "python": "3.14.5"
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "experiment_id": "exp-005-holdout-baseline",
+  "note": "Held-out check: baseline (vector top-5) on 46 questions generated after all settings were fixed, from passages v1 never used.",
+  "run_at": "2026-10-10T08:09:38.491821+00:00",
+  "duration_s": 1185.1,
+  "dataset": {
+    "path": "holdout.jsonl",
+    "version": "holdout",
+    "cases": 46
+  },
+  "pipeline": {
+    "retrieval_mode": "vector",
+    "reranking_enabled": false,
+    "rerank_model": null,
+    "rerank_candidates": null,
+    "min_rerank_score": null,
+    "langgraph_enabled": false,
+    "cache_enabled": false,
+    "top_k": 5,
+    "chunk_size": 1200,
+    "chunk_overlap": 150
+  },
+  "models": {
+    "generation": "gpt-4o-mini",
+    "embedding": "text-embedding-3-small",
+    "embedding_dim": 1536,
+    "judge": "gpt-4o-mini",
+    "judge_embeddings": "text-embedding-3-small"
+  },
+  "environment": {
+    "python": "3.14.5"
+  }
+}

@@ -48,7 +48,9 @@ class Settings(BaseSettings):
 
     # Relevance gate: when the best reranked chunk scores below this, answer
     # "not found" without calling the LLM. Cross-encoder logits, so it only
-    # applies with reranking on. None disables it.
+    # applies with reranking on. None disables it, and None is the recommended
+    # setting: a threshold of -2.5 looked useful on the tuning benchmark and
+    # then refused 3 of 34 answerable held-out questions (exp-005).
     MIN_RERANK_SCORE: float | None = None
 
     # CORS (comma-separated origins)

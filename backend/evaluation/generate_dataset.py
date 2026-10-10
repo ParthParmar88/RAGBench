@@ -1,6 +1,7 @@
 """Build the evaluation benchmark from the ingested corpus.
 
     python -m evaluation.generate_dataset
+    python -m evaluation.generate_dataset --split holdout
 
 Questions are generated *from real passages*, so every ground truth is traceable
 to text that actually exists. Each generated case is immediately checked: the
@@ -27,8 +28,14 @@ from app.database import SessionLocal
 from app.models import Document, KnowledgeUnit
 from app.services import llm
 from app.services.llm import UsageContext
-from evaluation.dataset.handwritten import HANDWRITTEN
-from evaluation.dataset.schema import TestCase, quote_found_in, save_dataset
+from evaluation.dataset.handwritten import HANDWRITTEN, HANDWRITTEN_HOLDOUT, Handwritten
+from evaluation.dataset.schema import (
+    DATASETS,
+    TestCase,
+    load_dataset,
+    quote_found_in,
+    save_dataset,
+)
 
 SEED = 20260814  # fixed so regeneration samples the same passages
 
@@ -48,6 +55,37 @@ TARGETS = {
     # experiments unable to distinguish a real effect from noise.
     "multi_chunk": 20,
     "multi_document": 15,
+}
+
+# The held-out split is smaller: its job is to confirm a direction on unseen
+# questions, not to resolve small effects. Same ratios, same over-requesting.
+HOLDOUT_TARGETS = {
+    "factual": 10,
+    "semantic": 12,
+    "keyword": 11,
+    "multi_chunk": 11,
+    "multi_document": 9,
+}
+
+
+@dataclass(frozen=True)
+class Split:
+    """One benchmark file and the recipe that produces it."""
+
+    name: str
+    seed: int  # fixed so regeneration samples the same passages
+    targets: dict
+    handwritten: list[Handwritten]
+    id_prefix: str
+    # Name of a split whose source passages must not be reused. This is what
+    # makes the held-out split held out: no question in it was written from a
+    # passage the tuning split also drew on.
+    exclude: str | None = None
+
+
+SPLITS = {
+    "v1": Split("v1", SEED, TARGETS, HANDWRITTEN, "q"),
+    "holdout": Split("holdout", 20261010, HOLDOUT_TARGETS, HANDWRITTEN_HOLDOUT, "h", exclude="v1"),
 }
 
 # Cross-document pairs chosen for genuine comparability. Random pairs produce
@@ -179,6 +217,22 @@ def load_corpus(db) -> dict[str, list[Passage]]:
     return corpus
 
 
+def exclude_used(
+    corpus: dict[str, list[Passage]], used: list[TestCase]
+) -> dict[str, list[Passage]]:
+    """Drop every passage that another split's questions were written from.
+
+    A passage counts as used if it contains any of that split's supporting
+    quotes. Adjacent chunks overlap, so a quote in the overlap removes both —
+    the conservative direction.
+    """
+    quotes = [q for case in used for q in case.supporting_quotes]
+    return {
+        doc: [p for p in passages if not any(quote_found_in(q, [p.text]) for q in quotes)]
+        for doc, passages in corpus.items()
+    }
+
+
 def _generate(system: str, user: str, schema, usage: UsageContext):
     completion = llm.chat_parse(
         model=settings.OPENAI_MODEL,
@@ -246,9 +300,18 @@ def build_pair(category: str, a: Passage, b: Passage, usage, attempts: int = 4):
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--limit", type=int, help="cap per category (for a dry run)")
+    parser.add_argument("--split", choices=sorted(SPLITS), default="v1")
     args = parser.parse_args()
 
-    rng = random.Random(SEED)
+    split = SPLITS[args.split]
+    targets = split.targets
+    out_path = DATASETS[split.name]
+    if split.exclude and out_path.exists():
+        # A held-out set regenerated after looking at results is no longer held
+        # out. Make that a deliberate act (delete the file), not an accident.
+        raise SystemExit(f"{out_path.name} already exists; refusing to regenerate a held-out split.")
+
+    rng = random.Random(split.seed)
     db = SessionLocal()
     try:
         corpus = load_corpus(db)
@@ -257,6 +320,12 @@ def main() -> None:
 
     if not corpus:
         raise SystemExit("Corpus is empty — run `python -m evaluation.ingest_corpus`.")
+
+    if split.exclude:
+        before = sum(len(p) for p in corpus.values())
+        corpus = exclude_used(corpus, load_dataset(DATASETS[split.exclude]))
+        after = sum(len(p) for p in corpus.values())
+        print(f"excluded {before - after} of {before} passages used by '{split.exclude}'\n")
 
     docs = sorted(corpus)
     usage = UsageContext(request_id="dataset-generation")
@@ -267,11 +336,11 @@ def main() -> None:
     def next_id() -> str:
         nonlocal counter
         counter += 1
-        return f"q{counter:03d}"
+        return f"{split.id_prefix}{counter:03d}"
 
     # --- single-passage categories, sampled evenly across documents ---------
     for category in ("factual", "semantic", "keyword"):
-        target = min(TARGETS[category], args.limit or TARGETS[category])
+        target = min(targets[category], args.limit or targets[category])
         picks = [
             rng.choice(corpus[docs[i % len(docs)]]) for i in range(target)
         ]
@@ -293,7 +362,7 @@ def main() -> None:
         print(f"  {category:16} {sum(c.category == category for c in cases):>3}")
 
     # --- two passages from the same paper -----------------------------------
-    target = min(TARGETS["multi_chunk"], args.limit or TARGETS["multi_chunk"])
+    target = min(targets["multi_chunk"], args.limit or targets["multi_chunk"])
     for i in range(target):
         doc = docs[i % len(docs)]
         passages = corpus[doc]
@@ -320,7 +389,7 @@ def main() -> None:
     print(f"  {'multi_chunk':16} {sum(c.category == 'multi_chunk' for c in cases):>3}")
 
     # --- two passages from different papers ---------------------------------
-    target = min(TARGETS["multi_document"], args.limit or TARGETS["multi_document"])
+    target = min(targets["multi_document"], args.limit or targets["multi_document"])
     for i in range(target):
         doc_a, doc_b = DOC_PAIRS[i % len(DOC_PAIRS)]
         if doc_a not in corpus or doc_b not in corpus:
@@ -343,7 +412,7 @@ def main() -> None:
     print(f"  {'multi_document':16} {sum(c.category == 'multi_document' for c in cases):>3}")
 
     # --- hand-written adversarial cases -------------------------------------
-    for case in HANDWRITTEN:
+    for case in split.handwritten:
         cases.append(
             TestCase(
                 id=next_id(),
@@ -355,17 +424,17 @@ def main() -> None:
                 notes=case.notes,
             )
         )
-    print(f"  {'hand-written':16} {len(HANDWRITTEN):>3}")
+    print(f"  {'hand-written':16} {len(split.handwritten):>3}")
 
-    save_dataset(cases)
+    save_dataset(cases, out_path)
     tokens = sum(r.total_tokens for r in usage.records)
-    print(f"\n{len(cases)} cases written to dataset/v1.jsonl")
+    print(f"\n{len(cases)} cases written to dataset/{out_path.name}")
     print(f"generation used {tokens:,} tokens across {len(usage.records)} calls")
     if rejected:
         print(f"\n{len(rejected)} rejected (quote not verbatim):")
         for reason in rejected:
             print(f"  - {reason}")
-    print("\nNext: python -m evaluation.validate_dataset")
+    print(f"\nNext: python -m evaluation.validate_dataset --dataset {split.name}")
 
 
 if __name__ == "__main__":

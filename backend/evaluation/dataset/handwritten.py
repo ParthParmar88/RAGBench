@@ -162,3 +162,105 @@ AMBIGUOUS = [
 
 
 HANDWRITTEN: list[Handwritten] = UNANSWERABLE + AMBIGUOUS
+
+
+# --- held-out split ----------------------------------------------------------
+# Written after the relevance-gate threshold was tuned on the eight cases above,
+# so the gate can be checked on questions it has never seen. Each was verified
+# absent from the corpus by text search before being added.
+
+UNANSWERABLE_HOLDOUT = [
+    Handwritten(
+        "What retrieval accuracy does DPR report on the MTEB benchmark?",
+        REFUSAL,
+        "unanswerable",
+        "MTEB (2022) postdates DPR. 'DPR' and 'retrieval accuracy' both retrieve "
+        "strongly, so the context will be full of real DPR accuracy numbers.",
+    ),
+    Handwritten(
+        "How many GPU hours did it take to train ColBERTv2?",
+        REFUSAL,
+        "unanswerable",
+        "Only the original ColBERT is in the corpus. Tests whether a version "
+        "suffix is noticed or the v1 training details are reported instead.",
+    ),
+    Handwritten(
+        "What is the context window size of Claude 3 Opus?",
+        REFUSAL,
+        "unanswerable",
+        "One paper evaluates Claude-1.3 and discusses context windows at length, "
+        "so retrieval looks excellent. The model asked about is absent.",
+    ),
+    Handwritten(
+        "What BLEU score does the Transformer achieve on English-to-Japanese "
+        "translation?",
+        REFUSAL,
+        "unanswerable",
+        "The paper reports English-German and English-French only. A near-miss "
+        "numeric question: the right table is retrieved, the row doesn't exist.",
+    ),
+    Handwritten(
+        "What is the carbon footprint, in kilograms of CO2, of pre-training "
+        "BERT-large?",
+        REFUSAL,
+        "unanswerable",
+        "Pre-training is described in detail; its emissions are not.",
+    ),
+    Handwritten(
+        "What Recall@100 does BM25 achieve on the LoTTE benchmark?",
+        REFUSAL,
+        "unanswerable",
+        "LoTTE postdates every paper here, while BM25 Recall@100 on other "
+        "benchmarks is reported in several of them.",
+    ),
+    Handwritten(
+        "What is the tokenizer vocabulary size of GPT-4o?",
+        REFUSAL,
+        "unanswerable",
+        "GPT-4o is absent. Other models' vocabularies are described, inviting a "
+        "substituted number.",
+    ),
+    Handwritten(
+        "What is the average salary of a machine learning engineer in Germany?",
+        REFUSAL,
+        "unanswerable",
+        "Out of domain entirely. The easy case.",
+    ),
+]
+
+AMBIGUOUS_HOLDOUT = [
+    Handwritten(
+        "What learning rate should be used?",
+        "Depends on the model and stage: the corpus reports different learning "
+        "rates for different systems and for pre-training versus fine-tuning. A "
+        "good answer asks which model is meant or answers conditionally.",
+        "ambiguous",
+        "Learning rates appear in most papers, so retrieval succeeds while the "
+        "question has no single answer.",
+    ),
+    Handwritten(
+        "How long does training take?",
+        "Unanswerable as posed: no model is specified, and the corpus describes "
+        "several with very different training times. A good answer asks which "
+        "model is meant.",
+        "ambiguous",
+        "No referent. The failure mode is reporting whichever paper ranks first.",
+    ),
+    Handwritten(
+        "Which dataset should be used for evaluation?",
+        "Depends on the task: the corpus uses different datasets for question "
+        "answering, passage ranking, translation and zero-shot retrieval. A good "
+        "answer asks what is being evaluated.",
+        "ambiguous",
+        "Invites confidently naming one dataset.",
+    ),
+    Handwritten(
+        "What score did the model get on the benchmark?",
+        "Underspecified twice over: neither the model nor the benchmark is "
+        "named. A good answer asks for both.",
+        "ambiguous",
+        "Maximally vague. Any specific number is a guess.",
+    ),
+]
+
+HANDWRITTEN_HOLDOUT: list[Handwritten] = UNANSWERABLE_HOLDOUT + AMBIGUOUS_HOLDOUT

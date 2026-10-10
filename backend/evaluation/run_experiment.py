@@ -35,7 +35,7 @@ from pathlib import Path
 from app.config import settings
 from app.database import SessionLocal
 from app.services import rag
-from evaluation.dataset.schema import DATASET_V1, load_dataset
+from evaluation.dataset.schema import DATASETS, load_dataset
 from evaluation.metrics import is_refusal, mean, percentile, score_retrieval
 
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
@@ -184,17 +184,24 @@ def run_ragas(rows: list[dict]) -> dict:
     frame = result.to_pandas()
     per_case = {}
     scores = {}
+    # How many cases each metric actually scored. A judge call that times out
+    # comes back as NaN and is dropped from the mean, so a "score" can silently
+    # be an average over a handful of cases. The held-out runs (exp-005) had
+    # context_precision scored on 1 of 34; without this count, that mean looked
+    # like any other number.
+    scored = {}
     for column in ("faithfulness", "answer_relevancy", "context_precision", "context_recall"):
         if column not in frame.columns:
             continue
         values = [float(v) for v in frame[column].tolist() if v == v]  # drop NaN
         scores[column] = round(sum(values) / len(values), 4) if values else None
+        scored[column] = len(values)
         for row, value in zip(gradable, frame[column].tolist()):
             per_case.setdefault(row["id"], {})[column] = (
                 None if value != value else round(float(value), 4)
             )
 
-    return {"graded": len(samples), "scores": scores, "per_case": per_case}
+    return {"graded": len(samples), "scores": scores, "scored": scored, "per_case": per_case}
 
 
 def summarize(rows: list[dict], ragas_result: dict | None) -> dict:
@@ -271,6 +278,10 @@ def main() -> None:
     parser.add_argument("--no-ragas", action="store_true", help="skip LLM-judged metrics")
     parser.add_argument("--top-k", type=int, help="override retrieval depth")
     parser.add_argument("--note", default="", help="what this run is testing")
+    parser.add_argument(
+        "--dataset", choices=sorted(DATASETS), default="v1",
+        help="benchmark split; 'holdout' is for confirming a finished config, never for tuning",
+    )
     parser.add_argument("--rerank", action="store_true", help="enable cross-encoder reranking")
     parser.add_argument("--rerank-model", help="override the cross-encoder model")
     parser.add_argument("--candidates", type=int, help="vector candidates fetched for reranking")
@@ -300,7 +311,7 @@ def main() -> None:
             f"use a new --id (e.g. {args.id}-rerun) rather than overwriting."
         )
 
-    cases = load_dataset()
+    cases = load_dataset(DATASETS[args.dataset])
     if not cases:
         sys.exit("Dataset is empty — run `python -m evaluation.generate_dataset`.")
 
@@ -322,7 +333,7 @@ def main() -> None:
         "note": args.note,
         "run_at": datetime.now(timezone.utc).isoformat(),
         "duration_s": elapsed,
-        "dataset": {"path": DATASET_V1.name, "version": "v1", "cases": len(cases)},
+        "dataset": {"path": DATASETS[args.dataset].name, "version": args.dataset, "cases": len(cases)},
         "pipeline": {
             "retrieval_mode": "vector",
             "reranking_enabled": settings.RERANK_ENABLED,
@@ -367,8 +378,12 @@ def main() -> None:
     print(f"tokens/query     {summary['tokens']['total_mean']}")
     print(f"cost/query       ${summary['cost']['per_query_mean']}")
     if ragas_result and "scores" in ragas_result:
+        graded = ragas_result["graded"]
         for name, value in ragas_result["scores"].items():
-            print(f"{name:16} {value}")
+            count = ragas_result["scored"][name]
+            # Below 90% coverage the mean is over a biased subset: do not cite it.
+            flag = "" if count >= 0.9 * graded else "   <-- INCOMPLETE, judge calls failed"
+            print(f"{name:16} {value}   ({count}/{graded} scored){flag}")
     print(f"\nwritten to {out_dir}")
 
 

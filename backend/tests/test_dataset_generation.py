@@ -88,3 +88,47 @@ def test_the_word_document_is_not_treated_as_leakage():
     retrieval questions."""
     assert not leaks_scaffold("How many documents does DPR retrieve per query?")
     assert not leaks_scaffold("What is the second stage of the ranking pipeline?")
+
+
+# --- held-out split ----------------------------------------------------------
+
+
+def test_holdout_excludes_passages_the_tuning_split_used():
+    """A held-out question written from a passage v1 already used would test
+    memorised territory. The passage must leave the sampling pool."""
+    from evaluation.dataset.schema import TestCase
+    from evaluation.generate_dataset import Passage, exclude_used
+
+    used = Passage("bert.pdf", "BERT is pre-trained on two tasks. Masked LM is one of them.")
+    fresh = Passage("bert.pdf", "Fine-tuning is straightforward for sequence tasks.")
+    other = Passage("dpr.pdf", "DPR uses a dual-encoder trained with in-batch negatives.")
+    corpus = {"bert.pdf": [used, fresh], "dpr.pdf": [other]}
+    v1 = [TestCase("q001", "?", "a", "factual", ["bert.pdf"], ["Masked LM is one of them."])]
+
+    remaining = exclude_used(corpus, v1)
+
+    assert remaining["bert.pdf"] == [fresh]
+    assert remaining["dpr.pdf"] == [other]
+
+
+def test_exclusion_survives_extraction_artefacts():
+    """Quotes are matched with the same normalization as everywhere else, so a
+    line break inside the passage must not let a used passage slip through."""
+    from evaluation.dataset.schema import TestCase
+    from evaluation.generate_dataset import Passage, exclude_used
+
+    passage = Passage("bert.pdf", "Masked LM is one\nof   them.")
+    v1 = [TestCase("q001", "?", "a", "factual", ["bert.pdf"], ["Masked LM is one of them."])]
+
+    assert exclude_used({"bert.pdf": [passage]}, v1) == {"bert.pdf": []}
+
+
+def test_holdout_split_is_independent_of_the_tuning_split():
+    from evaluation.generate_dataset import SPLITS
+
+    v1, holdout = SPLITS["v1"], SPLITS["holdout"]
+    assert holdout.exclude == "v1"
+    assert holdout.seed != v1.seed
+    assert holdout.id_prefix != v1.id_prefix
+    # No hand-written adversarial question may appear in both.
+    assert not {c.question for c in v1.handwritten} & {c.question for c in holdout.handwritten}

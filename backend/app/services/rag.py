@@ -98,6 +98,11 @@ def below_relevance_gate(chunks: list[RetrievedChunk]) -> bool:
     Gates on the cross-encoder score, not vector similarity: on the benchmark,
     vector scores for answerable and unanswerable questions overlap almost
     completely (0.29–0.84 vs 0.37–0.70), so no vector threshold separates them.
+
+    Off by default. The cross-encoder score separates them better, but not well
+    enough: a question about something *near* the corpus retrieves on-topic
+    passages that score high, so relevance cannot tell "answer present" from
+    "topic present". The held-out run (exp-005) showed exactly that.
     """
     threshold = settings.MIN_RERANK_SCORE
     if threshold is None or not chunks:

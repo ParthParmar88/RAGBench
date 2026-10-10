@@ -15,6 +15,7 @@ Checks:
   - unanswerable cases carry no docs or quotes (and every other case does)
   - category distribution is reported, so gaps are visible
 """
+import argparse
 import sys
 from collections import Counter
 
@@ -22,7 +23,7 @@ from sqlalchemy import select
 
 from app.database import SessionLocal
 from app.models import Document, KnowledgeUnit
-from evaluation.dataset.schema import CATEGORIES, load_dataset, quote_found_in
+from evaluation.dataset.schema import CATEGORIES, DATASETS, load_dataset, quote_found_in
 
 
 def corpus_text_by_doc(db) -> dict[str, list[str]]:
@@ -91,7 +92,11 @@ def validate(cases, by_doc) -> list[str]:
 
 
 def main() -> None:
-    cases = load_dataset()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--dataset", choices=sorted(DATASETS), default="v1")
+    args = parser.parse_args()
+
+    cases = load_dataset(DATASETS[args.dataset])
     if not cases:
         sys.exit("Dataset is empty — run `python -m evaluation.generate_dataset`.")
 

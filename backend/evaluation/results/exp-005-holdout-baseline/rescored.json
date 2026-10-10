@@ -1,0 +1,242 @@
+{
+  "retrieval": {
+    "quote_hit_rate": 0.7353,
+    "quote_recall": 0.6029,
+    "doc_precision": 0.6647,
+    "n": 34,
+    "by_category": {
+      "factual": {
+        "n": 8,
+        "quote_hit_rate": 0.875,
+        "quote_recall": 0.875
+      },
+      "semantic": {
+        "n": 8,
+        "quote_hit_rate": 0.375,
+        "quote_recall": 0.375
+      },
+      "keyword": {
+        "n": 8,
+        "quote_hit_rate": 0.75,
+        "quote_recall": 0.75
+      },
+      "multi_chunk": {
+        "n": 7,
+        "quote_hit_rate": 0.8571,
+        "quote_recall": 0.4286
+      },
+      "multi_document": {
+        "n": 3,
+        "quote_hit_rate": 1.0,
+        "quote_recall": 0.5
+      }
+    }
+  },
+  "changed_cases": [],
+  "per_case": {
+    "h001": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h002": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h003": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "h004": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h005": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h006": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "h007": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h008": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "h009": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.0,
+      "doc_hit": false
+    },
+    "h010": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h011": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "h012": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.0,
+      "doc_hit": false
+    },
+    "h013": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.0,
+      "doc_hit": false
+    },
+    "h014": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h015": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "h016": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.0,
+      "doc_hit": false
+    },
+    "h017": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h018": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h019": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h020": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h021": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h022": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "h023": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "h024": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h025": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h026": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "h027": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h028": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "h029": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h030": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "h031": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "h032": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "h033": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "h034": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    }
+  }
+}
