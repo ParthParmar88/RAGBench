@@ -17,7 +17,7 @@ class Settings(BaseSettings):
     # Database (discrete connection components)
     PG_HOST: str = "localhost"
     PG_PORT: int = 5432
-    PG_DATABASE: str = "parax"
+    PG_DATABASE: str = "ragbench"
     PG_CONNECTION_USER: str = "postgres"
     PG_CONNECTION_PASSWORD: str = "root"
     PG_SCHEMA_NAME: str = "public"
@@ -38,6 +38,18 @@ class Settings(BaseSettings):
     TOP_K: int = 5
     CHUNK_SIZE: int = 1200
     CHUNK_OVERLAP: int = 150
+
+    # Reranking: fetch RERANK_CANDIDATES by vector search, keep the TOP_K the
+    # cross-encoder scores highest. Off by default so the baseline stays
+    # reproducible by configuration alone.
+    RERANK_ENABLED: bool = False
+    RERANK_MODEL: str = "cross-encoder/ms-marco-MiniLM-L12-v2"
+    RERANK_CANDIDATES: int = 20
+
+    # Relevance gate: when the best reranked chunk scores below this, answer
+    # "not found" without calling the LLM. Cross-encoder logits, so it only
+    # applies with reranking on. None disables it.
+    MIN_RERANK_SCORE: float | None = None
 
     # CORS (comma-separated origins)
     CORS_ORIGINS: str = "http://localhost:5173"

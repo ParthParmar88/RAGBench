@@ -59,10 +59,11 @@ class TurnUsage(BaseModel):
 
 
 class QueryTimings(BaseModel):
-    """Per-stage latency. `retrieval_ms` is embedding + search."""
+    """Per-stage latency. `retrieval_ms` is embedding + search + rerank."""
 
     embedding_ms: int
     search_ms: int
+    rerank_ms: int = 0
     retrieval_ms: int
     generation_ms: int
     total_ms: int
@@ -72,6 +73,7 @@ class RetrievalInfo(BaseModel):
     chunk_count: int
     top_score: float | None
     avg_score: float | None
+    top_rerank_score: float | None = None
 
 
 class ChatResponse(BaseModel):

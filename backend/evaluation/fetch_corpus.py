@@ -23,7 +23,7 @@ CORPUS_DIR = Path(__file__).resolve().parent / "corpus"
 MANIFEST = CORPUS_DIR / "manifest.json"
 
 # arXiv asks for unthrottled crawling to identify itself and pace requests.
-HEADERS = {"User-Agent": "paraX-eval-corpus/1.0 (RAG evaluation benchmark)"}
+HEADERS = {"User-Agent": "RAGBench-eval-corpus/1.0 (RAG evaluation benchmark)"}
 DELAY_SECONDS = 3.0
 
 

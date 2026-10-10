@@ -1,4 +1,4 @@
-"""Chat endpoint: the RAG query (embed -> vector search -> synthesize)."""
+"""Chat endpoint: the RAG query (embed -> vector search -> [rerank] -> synthesize)."""
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 
@@ -29,10 +29,12 @@ def ask(payload: ChatRequest, db: Session = Depends(get_db)):
             chunk_count=result.retrieval.chunk_count,
             top_score=result.retrieval.top_score,
             avg_score=result.retrieval.avg_score,
+            top_rerank_score=result.retrieval.top_rerank_score,
         ),
         timings=QueryTimings(
             embedding_ms=result.timings.embedding_ms,
             search_ms=result.timings.search_ms,
+            rerank_ms=result.timings.rerank_ms,
             retrieval_ms=result.timings.retrieval_ms,
             generation_ms=result.timings.generation_ms,
             total_ms=result.timings.total_ms,

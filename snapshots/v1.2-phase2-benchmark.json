@@ -1,0 +1,8 @@
+{
+  "name": "v1.2-phase2-benchmark",
+  "created_at": "2026-08-17T11:25:16.527455+00:00",
+  "file_count": 70,
+  "bytes": 101940,
+  "sha256": "6af2409ae3d5c255d266f1676263fe1082979ed829e72498b1b31413b17d592e",
+  "note": "Phase 2 exit. Evaluation corpus: 8 arXiv IR/NLP papers, 445 chunks, 120 pages, SHA-256 manifest. Benchmark: 75 cases across 7 categories, ground truth anchored to verbatim quotes (chunking-invariant). pypdf 5.1.0 -> 6.16.0 with per-page extraction resilience. 87 tests."
+}

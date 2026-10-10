@@ -1,0 +1,75 @@
+{
+  "cases": 75,
+  "succeeded": 75,
+  "errors": 0,
+  "error_rate": 0.0,
+  "retrieval": {
+    "quote_hit_rate": 0.8689,
+    "quote_recall": 0.7787,
+    "doc_precision": 0.7197,
+    "n": 61,
+    "by_category": {
+      "factual": {
+        "n": 16,
+        "quote_hit_rate": 0.8125,
+        "quote_recall": 0.8125
+      },
+      "semantic": {
+        "n": 15,
+        "quote_hit_rate": 0.8667,
+        "quote_recall": 0.8667
+      },
+      "keyword": {
+        "n": 14,
+        "quote_hit_rate": 1.0,
+        "quote_recall": 1.0
+      },
+      "multi_chunk": {
+        "n": 10,
+        "quote_hit_rate": 0.8,
+        "quote_recall": 0.45
+      },
+      "multi_document": {
+        "n": 6,
+        "quote_hit_rate": 0.8333,
+        "quote_recall": 0.5
+      }
+    }
+  },
+  "behaviour": {
+    "refusal_rate_unanswerable": 0.625,
+    "refusal_rate_answerable": 0.0,
+    "n_unanswerable": 8,
+    "n_answerable": 61
+  },
+  "latency_ms": {
+    "retrieval_ms": {
+      "mean": 481.72,
+      "p50": 425,
+      "p95": 861
+    },
+    "generation_ms": {
+      "mean": 1603.2267,
+      "p50": 1360,
+      "p95": 3200
+    },
+    "total_ms": {
+      "mean": 2085.8267,
+      "p50": 1816,
+      "p95": 3689
+    }
+  },
+  "tokens": {
+    "input_mean": 3494.4133,
+    "output_mean": 51.6267,
+    "total_mean": 3546.04,
+    "total_sum": 265953
+  },
+  "cost": {
+    "per_query_mean": 0.0006,
+    "run_total": 0.041636
+  },
+  "ragas": {
+    "skipped": true
+  }
+}

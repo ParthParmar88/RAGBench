@@ -57,6 +57,9 @@ CATEGORIES = {
 
 @dataclass
 class TestCase:
+    # Not a pytest test class, despite the name.
+    __test__ = False
+
     id: str
     question: str
     ground_truth: str

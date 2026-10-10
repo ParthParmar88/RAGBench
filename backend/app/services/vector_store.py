@@ -16,6 +16,7 @@ class RetrievedChunk:
     score: float  # cosine similarity in [0, 1], higher = more relevant
     page: int | None = None  # None for chunks ingested before provenance existed
     chunk_index: int | None = None
+    rerank_score: float | None = None  # cross-encoder logit; None when not reranked
 
 
 @dataclass

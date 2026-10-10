@@ -1,6 +1,6 @@
 # Architecture
 
-How paraX is built, what the baseline does, and where its limits are.
+How RAGBench is built, what the baseline does, and where its limits are.
 
 This document is written *before* the optimization experiments so the starting
 point can't be retroactively flattered. Sections marked **Known limitation**
@@ -158,7 +158,9 @@ a fact severed across two chunks** — no retriever can find a whole passage tha
 was never stored whole. Any experiment run before this is addressed risks
 measuring the chunker rather than the retriever.
 
-→ *Experiment 002*
+→ *Status: open.* Experiment 002 became a top-k sweep instead. Its result (top-20
+finds 93% of passages, top-5 finds 82%) showed that retrieval depth, not chunk
+boundaries, was the cheaper lever. See [RESULTS.md](../RESULTS.md).
 
 ### 5.2 No lexical retrieval
 
@@ -166,7 +168,8 @@ Retrieval is purely semantic. Embeddings blur exact tokens, so a query for a
 specific identifier (`ColBERT`, `Depends()`, an error code) can rank a
 topically-similar-but-wrong passage above the exact match.
 
-→ *Experiment 003 (hybrid retrieval)*
+→ *Status: not built.* The baseline already hits 13 of 14 keyword questions, leaving
+one question of headroom. See [RESULTS.md](../RESULTS.md).
 
 ### 5.3 Retrieval count and generation count are the same number
 
@@ -174,7 +177,9 @@ topically-similar-but-wrong passage above the exact match.
 sees". Reranking requires decoupling these — fetch ~20 for recall, rerank down
 to ~5 for precision.
 
-→ *Experiment 004*
+→ *Status: resolved in Experiment 003.* `RERANK_CANDIDATES` (fetched) and `TOP_K`
+(sent to the LLM) are now separate, with a cross-encoder in between
+(`services/reranker.py`).
 
 ### 5.4 Citations are self-reported
 
@@ -218,12 +223,17 @@ Search returns the top *k* regardless of score. A query with no relevant
 content still returns 5 chunks, at whatever similarity. The synthesizer prompt
 is the only guard against answering from irrelevant context.
 
+→ *Status: resolved in Experiment 004.* `MIN_RERANK_SCORE` answers "not found"
+without calling the LLM when the best cross-encoder score is below the threshold.
+It gates on the cross-encoder, not vector similarity, because vector scores for
+answerable and unanswerable questions overlap almost entirely.
+
 ---
 
 ## 6. Reproducibility
 
-Version control is unavailable on the development machine, so phase boundaries
-are frozen as immutable archives instead:
+Phases 0–2 were built without version control, so their boundaries were frozen
+as immutable archives instead:
 
 ```bash
 python scripts/snapshot.py <name> --note "what this is"

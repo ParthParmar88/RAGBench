@@ -48,7 +48,9 @@ def chat_parse(
 ):
     """Structured-output chat call with automatic usage capture."""
     started = perf_counter()
-    completion = client.beta.chat.completions.parse(
+    # openai>=2 promoted `.parse` out of the `.beta` namespace. The old path is
+    # still aliased, but it is legacy and will eventually be removed.
+    completion = client.chat.completions.parse(
         model=model,
         messages=messages,
         response_format=response_format,

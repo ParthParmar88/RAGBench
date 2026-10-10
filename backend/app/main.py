@@ -7,16 +7,19 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.api.routes import chat, documents, usage
 from app.config import settings
 from app.database import init_db
+from app.services import reranker
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # Enable pgvector, create tables + index on startup.
     init_db()
+    if settings.RERANK_ENABLED:
+        reranker.warm_up()
     yield
 
 
-app = FastAPI(title="paraX RAG API", version="1.0.0", lifespan=lifespan)
+app = FastAPI(title="RAGBench API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,

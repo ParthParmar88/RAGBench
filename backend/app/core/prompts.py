@@ -1,5 +1,10 @@
 """System prompts for the LLM stages."""
 
+# The refusal the synthesizer is told to give, and the one the relevance gate
+# returns without calling it. Kept identical so the two are indistinguishable
+# to the user and to evaluation's refusal detection.
+NOT_FOUND_ANSWER = "I couldn't find that information in the provided documents."
+
 SYNTHESIZER_SYSTEM = """\
 You are a helpful AI assistant.
 

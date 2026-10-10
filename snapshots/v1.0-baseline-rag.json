@@ -1,0 +1,8 @@
+{
+  "name": "v1.0-baseline-rag",
+  "created_at": "2026-08-14T07:07:34.835101+00:00",
+  "file_count": 43,
+  "bytes": 41845,
+  "sha256": "c0e99756224e7b51c8b06ed5168f89b64212f84b11cd34a7ee771f8b2e348ba1",
+  "note": "Frozen baseline linear RAG: embed -> pgvector HNSW cosine top-5 -> single structured-output gpt-4o-mini call. Pre-optimization reference for all experiments."
+}

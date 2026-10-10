@@ -1,0 +1,8 @@
+{
+  "name": "v1.1-phase1-measured",
+  "created_at": "2026-08-14T09:06:40.753883+00:00",
+  "file_count": 56,
+  "bytes": 63850,
+  "sha256": "d53aa567025e1d330bc77e37b70eb80c2bd5f3ec0137d5c674ce8871a193bc64",
+  "note": "Phase 1 exit. Idempotent ingestion (SHA-256 keyed), chunk provenance (document_id/page/chunk_index), per-stage latency breakdown, services/rag.py query path exposing full contexts for evaluation. 63 tests. Retrieval behaviour unchanged from baseline."
+}

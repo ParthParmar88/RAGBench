@@ -7,12 +7,12 @@ export default function App() {
       {/* Top bar */}
       <header className="flex h-14 shrink-0 items-center gap-3 border-b border-line bg-surface px-5">
         <div className="grid h-7 w-7 place-items-center rounded-lg bg-ink text-sm font-semibold text-white">
-          P
+          R
         </div>
         <div className="flex items-baseline gap-2.5">
-          <h1 className="text-[15px] font-semibold tracking-tight">paraX</h1>
+          <h1 className="text-[15px] font-semibold tracking-tight">RAGBench</h1>
           <span className="hidden text-[13px] text-muted sm:inline">
-            Retrieval-Augmented Generation
+            A Measured RAG Pipeline
           </span>
         </div>
       </header>

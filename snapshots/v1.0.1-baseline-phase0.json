@@ -1,0 +1,8 @@
+{
+  "name": "v1.0.1-baseline-phase0",
+  "created_at": "2026-08-14T07:18:33.708095+00:00",
+  "file_count": 49,
+  "bytes": 47223,
+  "sha256": "df7bbab7e5709b4f140157aff2f41869859ee5ddb1f632556101d79e69a7ea72",
+  "note": "Phase 0 exit. Behaviourally identical to v1.0-baseline-rag: dead pipeline migration removed, pytest harness added (28 tests). Reference point for all experiments."
+}
