@@ -1,6 +1,6 @@
 # RAGBench — A Measured RAG Pipeline
 
-[![tests](https://github.com/ParthParmar88/RAGBench---A-Measured-RAG-Pipeline/actions/workflows/tests.yml/badge.svg)](https://github.com/ParthParmar88/RAGBench---A-Measured-RAG-Pipeline/actions/workflows/tests.yml)
+[![tests](https://github.com/ParthParmar88/RAGBench/actions/workflows/tests.yml/badge.svg)](https://github.com/ParthParmar88/RAGBench/actions/workflows/tests.yml)
 
 A retrieval-augmented question-answering system over PDFs. It started as a basic RAG
 pipeline and was improved one version at a time, with each change measured against a
