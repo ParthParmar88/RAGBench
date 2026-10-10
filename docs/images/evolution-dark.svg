@@ -39,16 +39,16 @@
 <line x1="388.1" y1="123.6" x2="388.1" y2="169.0" stroke="#2c2c2a" stroke-width="1"/>
 <line x1="827.0" y1="123.6" x2="827.0" y2="139.9" stroke="#2c2c2a" stroke-width="1"/>
 <text x="607.6" y="110.6" fill="#c3c2b7" font-size="13" font-weight="400" text-anchor="middle">59% fewer tokens, 1.6 pts lower hit rate</text>
-<path d="M284.8,367.1 L464.0,279.9 L827.0,163.9" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-<path d="M284.8,367.1 L282.2,279.9 L388.1,193.0" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M284.8,396.2 L464.0,279.9 L827.0,163.9" fill="none" stroke="#d95926" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+<path d="M284.8,396.2 L282.2,279.9 L388.1,193.0" fill="none" stroke="#3987e5" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
 <circle cx="464.0" cy="279.9" r="5" fill="#d95926" stroke="#1a1a19" stroke-width="2"/>
 <circle cx="827.0" cy="163.9" r="5" fill="#d95926" stroke="#1a1a19" stroke-width="2"/>
 <circle cx="282.2" cy="279.9" r="5" fill="#3987e5" stroke="#1a1a19" stroke-width="2"/>
 <circle cx="388.1" cy="193.0" r="5" fill="#3987e5" stroke="#1a1a19" stroke-width="2"/>
-<circle cx="284.8" cy="367.1" r="5" fill="#ffffff" stroke="#1a1a19" stroke-width="2"/>
+<circle cx="284.8" cy="396.2" r="5" fill="#ffffff" stroke="#1a1a19" stroke-width="2"/>
 <text x="476.0" y="297.9" fill="#ffffff" font-size="13" font-weight="400" text-anchor="start">Top-10 · 86.9%</text>
 <text x="815.0" y="151.9" fill="#ffffff" font-size="13" font-weight="400" text-anchor="end">Top-20 · 93.4%</text>
 <text x="270.2" y="284.9" fill="#ffffff" font-size="13" font-weight="400" text-anchor="end">Rerank 20→5 · 86.9%</text>
 <text x="376.1" y="181.0" fill="#ffffff" font-size="13" font-weight="400" text-anchor="end">Rerank 20→8 · 91.8%</text>
-<text x="296.8" y="387.1" fill="#ffffff" font-size="13" font-weight="400" text-anchor="start">Baseline, top-5 · 82.0%</text>
+<text x="296.8" y="416.2" fill="#ffffff" font-size="13" font-weight="400" text-anchor="start">Baseline, top-5 · 80.3%</text>
 </svg>

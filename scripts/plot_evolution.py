@@ -57,8 +57,15 @@ Y_TICK_MAX = 95
 
 def load(experiment_id: str) -> tuple[float, float]:
     """(tokens per query, quote hit rate in %) for one experiment."""
-    summary = json.loads((RESULTS / experiment_id / "summary.json").read_text(encoding="utf-8"))
-    return summary["tokens"]["total_mean"], summary["retrieval"]["quote_hit_rate"] * 100
+    directory = RESULTS / experiment_id
+    summary = json.loads((directory / "summary.json").read_text(encoding="utf-8"))
+    retrieval = summary["retrieval"]
+    # `evaluation.rescore` writes corrected retrieval metrics beside the
+    # original summary; prefer them so the chart reflects the current scorer.
+    rescored = directory / "rescored.json"
+    if rescored.exists():
+        retrieval = json.loads(rescored.read_text(encoding="utf-8"))["retrieval"]
+    return summary["tokens"]["total_mean"], retrieval["quote_hit_rate"] * 100
 
 
 def sx(tokens: float) -> float:

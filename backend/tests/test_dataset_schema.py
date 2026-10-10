@@ -98,3 +98,12 @@ def test_normalize_is_idempotent():
 
 def test_normalize_preserves_word_order_and_count():
     assert normalize("A  b\nc").split() == ["a", "b", "c"]
+
+
+def test_empty_quote_never_matches():
+    """The empty string is a substring of everything. A blank quote must not
+    count as retrieved, or the case scores a hit whatever was retrieved."""
+    assert not quote_found_in("", [SOURCE])
+    assert not quote_found_in("   ", [SOURCE])
+    # Reduces to nothing after edge-ellipsis trimming.
+    assert not quote_found_in("...", [SOURCE])

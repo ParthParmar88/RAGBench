@@ -1,0 +1,404 @@
+{
+  "retrieval": {
+    "quote_hit_rate": 0.8689,
+    "quote_recall": 0.7787,
+    "doc_precision": 0.8098,
+    "n": 61,
+    "by_category": {
+      "factual": {
+        "n": 16,
+        "quote_hit_rate": 0.875,
+        "quote_recall": 0.875
+      },
+      "semantic": {
+        "n": 15,
+        "quote_hit_rate": 0.8,
+        "quote_recall": 0.8
+      },
+      "keyword": {
+        "n": 14,
+        "quote_hit_rate": 0.9286,
+        "quote_recall": 0.9286
+      },
+      "multi_chunk": {
+        "n": 10,
+        "quote_hit_rate": 0.9,
+        "quote_recall": 0.55
+      },
+      "multi_document": {
+        "n": 6,
+        "quote_hit_rate": 0.8333,
+        "quote_recall": 0.5
+      }
+    }
+  },
+  "changed_cases": [],
+  "per_case": {
+    "q001": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q002": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q003": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q004": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "q005": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "q006": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q007": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q008": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.6,
+      "doc_hit": true
+    },
+    "q009": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q010": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q011": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "q012": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q013": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q014": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q015": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q016": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q017": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q018": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q019": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q020": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q021": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q022": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q023": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q024": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q025": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q026": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q027": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q028": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "q029": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q030": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q031": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q032": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q033": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q034": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.4,
+      "doc_hit": true
+    },
+    "q035": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q036": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q037": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q038": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q039": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q040": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q041": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q042": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q043": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q044": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q045": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 0.8,
+      "doc_hit": true
+    },
+    "q046": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q047": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q048": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q049": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q050": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q051": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q052": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q053": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q054": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 0.0,
+      "doc_hit": false
+    },
+    "q055": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q056": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q057": {
+      "quote_hit": true,
+      "quote_recall": 1.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q058": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 0.2,
+      "doc_hit": true
+    },
+    "q059": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q060": {
+      "quote_hit": true,
+      "quote_recall": 0.5,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    },
+    "q061": {
+      "quote_hit": false,
+      "quote_recall": 0.0,
+      "doc_precision": 1.0,
+      "doc_hit": true
+    }
+  }
+}

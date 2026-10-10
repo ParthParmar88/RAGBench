@@ -19,6 +19,8 @@ import json
 import sys
 from pathlib import Path
 
+from evaluation.rescore import load_rescored
+
 RESULTS_DIR = Path(__file__).resolve().parent / "results"
 
 # (path in summary.json, label, higher_is_better)
@@ -63,6 +65,16 @@ def load(experiment_id: str) -> tuple[dict, dict, dict]:
             if line.strip():
                 row = json.loads(line)
                 rows[row["id"]] = row
+
+    # A scorer or ground-truth correction is applied by `evaluation.rescore`,
+    # which leaves the original files alone. Use its numbers when present so a
+    # comparison never mixes corrected and uncorrected runs.
+    rescored = load_rescored(directory)
+    if rescored:
+        summary["retrieval"] = rescored["retrieval"]
+        for case_id, score in rescored["per_case"].items():
+            if case_id in rows:
+                rows[case_id]["retrieval"] = score
     return summary, config, rows
 
 

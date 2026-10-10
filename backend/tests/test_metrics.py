@@ -132,3 +132,39 @@ def test_percentile_of_single_value():
 
 def test_percentile_of_empty_is_none():
     assert percentile([], 95) is None
+
+
+# --- rescoring stored experiments -------------------------------------------
+
+
+def test_rescore_recomputes_from_stored_contexts():
+    """A stored row carries a stale score; rescoring must replace it using only
+    the saved contexts, and report which cases changed."""
+    from evaluation.dataset.schema import TestCase
+    from evaluation.rescore import rescore_rows
+
+    cases = {
+        "q1": TestCase("q1", "?", "a", "factual", ["a.pdf"], ["the real quote"]),
+        "q2": TestCase("q2", "?", "a", "factual", ["a.pdf"], ["another quote"]),
+        "q3": TestCase("q3", "?", "refuse", "unanswerable"),
+    }
+    rows = [
+        # Stored as a hit, but the quote is not in the contexts: stale.
+        {"id": "q1", "category": "factual", "contexts": ["unrelated"], "context_titles": ["a.pdf"],
+         "retrieval": {"quote_hit": True, "quote_recall": 1.0}},
+        {"id": "q2", "category": "factual", "contexts": ["has another quote here"],
+         "context_titles": ["a.pdf"], "retrieval": {"quote_hit": True, "quote_recall": 1.0}},
+        # Nothing to retrieve: excluded from retrieval aggregates.
+        {"id": "q3", "category": "unanswerable", "contexts": ["x"], "context_titles": ["a.pdf"],
+         "retrieval": {"quote_hit": False, "quote_recall": 0.0}},
+    ]
+
+    result = rescore_rows(rows, cases)
+
+    assert result["retrieval"]["n"] == 2
+    assert result["retrieval"]["quote_hit_rate"] == 0.5
+    assert result["changed_cases"] == ["q1"]
+    assert result["per_case"]["q1"]["quote_hit"] is False
+    assert result["retrieval"]["by_category"]["factual"] == {
+        "n": 2, "quote_hit_rate": 0.5, "quote_recall": 0.5,
+    }

@@ -23,6 +23,11 @@ from pathlib import Path
 
 DATASET_DIR = Path(__file__).resolve().parent
 DATASET_V1 = DATASET_DIR / "v1.jsonl"
+# Held-out split: generated after every pipeline setting was chosen, from
+# passages v1 never used. Never tune against it — the moment a setting is picked
+# by looking at this file, it stops being held out.
+DATASET_HOLDOUT = DATASET_DIR / "holdout.jsonl"
+DATASETS = {"v1": DATASET_V1, "holdout": DATASET_HOLDOUT}
 
 CATEGORIES = {
     "factual": "A specific fact stated in one passage. The easy baseline case.",
@@ -108,8 +113,16 @@ def normalize(text: str) -> str:
 
 
 def quote_found_in(quote: str, texts: list[str]) -> bool:
-    """True if `quote` appears in any of `texts` after normalization."""
+    """True if `quote` appears in any of `texts` after normalization.
+
+    An empty quote never matches. The empty string is a substring of every
+    text, so without this guard a case with a blank quote scores as retrieved
+    no matter what was retrieved — which is how v1's q057 credited every
+    experiment with a hit (see the erratum in evaluation/README.md).
+    """
     needle = normalize(quote)
+    if not needle:
+        return False
     return any(needle in normalize(text) for text in texts)
 
 
