@@ -1,0 +1,5 @@
+# Evaluation dependencies (evaluation/run_experiment.py): RAGAS with an OpenAI
+# judge. Not needed to run the app or the tests.
+#   pip install -r requirements.txt -r requirements-eval.txt
+ragas==0.4.3
+langchain-openai>=1.5
